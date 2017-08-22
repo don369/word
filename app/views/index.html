@@ -1,0 +1,19 @@
+{% extends 'layouts/app.html' %}
+
+
+
+{% block content %}
+<div class="container col-md-8 col-md-offset-2">
+    <form method="get" action="/words/search">
+      <div class="input-group form-group">
+        <input type="text" name="word" placeholder="输入单词" class="form-control">
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-default">搜索</button>
+        </span>
+      </div>
+    </form>
+    <div class="well">
+      <strong>随机一词</strong>
+    </div>
+  </div>
+{% endblock %}

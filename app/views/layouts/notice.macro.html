@@ -1,0 +1,7 @@
+{% macro notice(type, text) %}
+    {% if text != '' %}
+        <div class="alert {% if type == 'ok' %} alert-success {% else %} alert-danger {% endif %}">
+            {{text}}
+        </div>
+    {% endif %}
+{% endmacro %}

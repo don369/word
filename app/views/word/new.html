@@ -1,0 +1,26 @@
+{% extends '../layouts/app.html' %}
+{% import '_word.html' as form %}
+
+{% block jsurl %}
+    <script type="text/javascript" src="/js/word.js"></script>
+{% endblock %}
+{% block content %}
+<div class="container">
+
+    {{ form.word(word) }}
+    {% if user != '' %}
+        <input type="hidden" name="word" value="{{ word.name }}">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <div  id="div_extension" class="form-group">
+            <label>扩展</label>
+            <textarea name="extension" class='form-control' rows=6> {{ word.extension }} </textarea>
+        </div>
+        <button id="btn_my_word_submit" class="btn btn-default">添加新的单词</button>
+    {% endif %}
+</div>
+    
+<div class="container">
+    <div id="alert_div">
+</div>
+
+{% endblock %}

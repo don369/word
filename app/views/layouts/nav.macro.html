@@ -1,0 +1,16 @@
+{% macro for_nav(menu)%}
+    {% if Array.isArray(menu) %}
+        {% for _, val in menu %}
+            <li class='dropdown'>
+                {% if Array.isArray(val.url)%}
+                    <a href="#">{{ url }}</a>
+                    <ul class= "dropdown-menu">
+                        {{ for_nav(val.url) }}
+                    </ul>
+                {% else %}
+                    <a href="{{ val.url || '#' }}">{{ val.text }}</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}

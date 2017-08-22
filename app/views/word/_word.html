@@ -1,0 +1,27 @@
+{% macro word(_word)%}
+    <div class="input-group form-group">
+        
+        <input type="text" id="name" name='name' value="{{ _word.name }}" class="form-control" placeholder="输入单词">
+        <span class="input-group-btn">
+          <button class="btn btn-default" id="get_word_btn">查找单词</button>
+        </span>
+    </div>
+    {{ input_group('UK', '英音', 'audio_uk', _word.UK, _word.UKMP3) }}
+    {{ input_group('US', '美音', 'audio_us', _word.US, _word.USMP3) }}
+    <div class="well">
+        <balel>解释</label>
+        <div id = 'interpetation'>{{ _word.interpetation|safe }}</div>
+    </div>
+{% endmacro %}
+
+{% macro input_group(name, span_text, audio_id, text, mp3)%}
+    <div class="input-group form-group">
+        <label class="input-group-addon"> {{ span_text }} </label>
+        <div class="form-control" id="{{ name }}"> {{ text }} </div>
+        <span class="input-group-btn">
+            <button class="btn btn-default" data-id="{{ audio_id }}">播放</button>
+        </span>
+    </div>
+    <audio id="{{ audio_id }}" src="{{ mp3 || '#' }}"></audio>
+{% endmacro %}
+
