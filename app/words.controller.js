@@ -1,14 +1,12 @@
 const words = module.exports = require('express').Router();
 
-const db = require('./models/wordbook.js');
-const DbWord = db.words;
-const DbLexicon = db.lexicons;
 const getWord = require('../util/getword.js')
+const auth = require('../middleware/auth.js');
 
 words.get('/',index);
 words.get('/search',search);
 
-words.route('/new').get(new_get).post(new_post);
+words.route('/new').get(new_get).post(auth, new_post);
 words.route('/edit').get(edit_get).post(edit_post);
 words.delete('/del',(req, res)=>{});
 
@@ -20,22 +18,31 @@ function index(req, res){
 function search(req, res){
     let word = req.query.word;
     let userId = req.session.user_id;
+    _handle();
+    async function _handle(){
+        try{
+            let data;
+            let rs = await req.lexicons.findOne({name: word});
+            if(!rs){
+                let word_json = await getWord(word);
+                let _lexicon = new req.lexicons(word_json);
+                _lexicon.save();
+                data = _lexicon;
+            }else{
+                data = rs;
+            }
+            _render(data);
+        }catch(err){
+            res.app.emit('error', err, req, res);
+        }
+    };
 
-    DbLexicon.findOne({name: word},(err, rs) => (!rs) ? _renderPage() : _render(rs) );
-
-    function _renderPage(){
-        getWord(word, (lexicon)=>{
-            let _lexicon = new DbLexicon(lexicon);
-            _lexicon.save();
-            render(lexicon);
-        })
-    }
 
     function _render(lexicon){
         res.format({
             html: ()=> res.render('word/new',{ word: lexicon } ),
             json: ()=>{
-                DbWord.findOne({word}, (err, rs)=> res.send({lexicon: lexicon, my_word: rs }));
+                req.words.findOne({word}, (err, rs)=> res.send({lexicon: lexicon, my_word: rs }));
             }
         });
     }
@@ -50,7 +57,7 @@ function new_post(req, res, next){
     let status = 'error';
     let word = req.body.word;
     let userId = req.session.user_id;
-    DbWord.findOne({word, userId}, (err, rs)=>{
+    req.words.findOne({word, userId}, (err, rs)=>{
         if(err) return next(err);
         if(!rs){
             _addWord((err, rs)=>{
@@ -62,9 +69,11 @@ function new_post(req, res, next){
     });
     _render(rs);
 
+
     function _addWord(callback){
         let extension = req.body.extension;
-        let date = Date.now
+        let date = Date.now;
+        let DbWord = req.words;
         let word = new DbWord({word, userId});
         
         word.save(callback)

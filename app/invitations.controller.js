@@ -3,17 +3,17 @@
  * 
  */
 
-const db_invitation = require("./models/wordbook.js").invitations;
 const invitation = module.exports = require('express').Router();
 const csrf = require('csurf');
 const crypto = require('crypto');
+const auth = require('../middleware/auth.js');
 
 const csrfProtection = csrf({ cookie: true });
 
 invitation.use(csrfProtection);
-
-invitation.get('/', (req, res)=>{
-    res.send('invitation');
+invitation.use(auth);
+invitation.get(/^\/(index)?$/, (req, res)=>{
+    res.send('invitation', { csrfToken: req.csrfToken() });
 })
 
 invitation.get('/new', (req, res)=>{
@@ -23,7 +23,7 @@ invitation.post('/create', (req, res)=>{
     let code;
     if(req.body.code){
         code = crypto.createHash('md5').update(req.body.code).digest('hex');
-        let db = new db_invitation({code: code});
+        let db = new req.invitations({code: code});
         db.save((err)=>{
             if(!err){
                 req.flash('noticeType','ok');

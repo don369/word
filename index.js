@@ -1,7 +1,7 @@
-const express = require('express')
-const swig = require('swig')
-const path = require('path')
-const app = new express()
+const express = require('express');
+const swig = require('swig');
+const path = require('path');
+const app = new express();
 
 swig.setDefaults({
     allowErrors: true,
@@ -10,18 +10,18 @@ swig.setDefaults({
     encoding:'utf8'
 });
 
-app.engine('html', swig.renderFile)
-app.set('views', './app/views')
-app.set('view engine', 'html')
+app.engine('html', swig.renderFile);
+app.set('views', './app/views');
+app.set('view engine', 'html');
 
-app.set('view cache', false)
-swig.setDefaults({cache: false})
+app.set('view cache', false);
+swig.setDefaults({cache: false});
 
 app.use(express.static(path.join(__dirname ,'public')));
 
-require('./middleware')(app)
-require('./router.js')(app)
-
+require('./middleware')(app);
+require('./router.js')(app);
+require('./error.js')(app);
 
 const port = require('./config.js').port;
 app.listen(port);

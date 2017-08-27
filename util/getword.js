@@ -1,15 +1,18 @@
 const http = require('http');
 const { URL } = require('url');
 
-module.exports = (word, callback)=>{
+module.exports = (word)=>{
     const url = new URL(`http://xtk.azurewebsites.net/BingDictService.aspx?Word=${ word }`);
-    const req = http.request(url, (res)=>{
-        let data = '';
-        res.setEncoding('utf8');
-        res.on('data', chunk => data = data + chunk );
-        res.on('end', ()=> callback(parseWord(data)) );
+    return new Promise((resolve)=>{
+        const req = http.request(url, (res)=>{
+            let data = '';
+            res.setEncoding('utf8');
+            res.on('data', chunk => data = data + chunk );
+            res.on('end', ()=> resolve(parseWord(data)) );
+        })
+        req.end();
     })
-    req.end()
+    
 }
 
 function parseWord(word){

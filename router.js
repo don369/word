@@ -1,8 +1,17 @@
 
+
+
 module.exports = (app) =>{
-    app.use('/$',require('./app/index'));
-    app.use('/words',require('./app/words.js'))
-    app.use('/user',require('./app/user.js'))
-    app.use('/invitations', require('./app/invitations.js'))
-    app.use(require('./app/error.js'))
+    resources(/^\/(index)?$/,'index');
+    resources('/words','words');
+    resources('/user','user');
+    resources('/invitations', 'invitations');
+
+    /**
+     * 加载controller
+     */
+    function resources(path,resources){
+        app.use(path, require(`./app/${resources}.controller.js`));
+    }
 }
+

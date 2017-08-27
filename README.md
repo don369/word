@@ -4,7 +4,7 @@
 
 要求：
 
-* node: '^6.0'
+* node: '^7.6'
 
 * express: '^4.0'
 
@@ -13,16 +13,19 @@
 运行：
 
 先安装依赖项
+
 ```npm
 npm install 
 ```
 
 然后修改config.js中的数据库连接
+
 ```js
 db_connect: 'mongodb://localhost/wordbook',
 ```
 
 接着执行init.js文件
+
 ```js
 node init.js
 ```
@@ -33,6 +36,6 @@ node init.js
 
 默认用户为admin，密码为：admin
 
-／invitations/new用来生产邀请码。
+`／invitations/new` 用来生产邀请码。
 
 
