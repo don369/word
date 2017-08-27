@@ -23,5 +23,5 @@ const db = module.exports = {
 }
 
 function loadDb(Dbname, Schema) {
-    return mongoose.model(Dbname, require(`./${Schema}.model.js`)(mongoose.Schema));
+    return mongoose.model(Dbname, require(`./${Schema}.schema.js`)(mongoose.Schema));
 }
