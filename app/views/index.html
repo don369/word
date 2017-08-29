@@ -12,8 +12,28 @@
         </span>
       </div>
     </form>
-    <div class="well">
-      <strong>随机一词</strong>
+
+    <div class="container">
+      
     </div>
+
+    <div class="well">
+      
+      <strong>每日一词</strong>
+
+      <h2>{{ dailyWord.name }}</h2>
+      <div style="margin:20px 0px;">
+        <span>英:[{{ dailyWord.UK }}] </span>
+        <button class="glyphicon glyphicon-volume-up" mp3-url="{{ dailyWord.UKMP3 }}" audio-type="audio_uk"> </button> 
+        <span style="margin-left:10px">美:[{{ dailyWord.US }}] </span>
+        <button class="glyphicon glyphicon-volume-up" mp3-url="{{ dailyWord.USMP3 }}" audio-type="audio_us"></button>
+      </div>
+
+      <div class="form-group">
+        {{ dailyWord.interpetation|safe }}
+      </div>
+
+    </div>
+
   </div>
 {% endblock %}

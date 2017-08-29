@@ -6,7 +6,7 @@ const flash = require('connect-flash');
 const mongoStore = require('connect-mongo')(session);
 const { mongoose, middleware } = require('../app/models');
 
-const nav = require('./initnav.js');
+const nav = require('./init-local-data.js');
 const notice = require('./notice.js');
 
 module.exports = (app) => {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 mongoose.Promise = Promise;
+
 mongoose.connect(require('../../config.js').db_connect);
 mongoose.connection.on('error', console.error.bind(console, 'connection error: '))
     .once('open', () => {
@@ -12,12 +13,14 @@ const db = module.exports = {
     lexicons: loadDb('lexicons', 'lexicon'),
     myusers: loadDb('myusers', 'myuser'),
     words: loadDb('words', 'word'),
+    dailyWord: loadDb('dailyword', 'daily-word'),
     mongoose: mongoose,
     middleware: (req, res, next) => {
         req.invitations = res.invitations = db.invitations;
         req.lexicons = res.lexicons = db.lexicons;
         req.myusers = res.myusers = db.myusers;
         req.words = res.words = db.words;
+        req.dailyWord = res.dailyWord = db.dailyWord;
         next();
     }
 }

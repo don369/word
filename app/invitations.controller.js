@@ -12,6 +12,7 @@ const csrfProtection = csrf({ cookie: true });
 
 invitation.use(csrfProtection);
 invitation.use(auth);
+
 invitation.get(/^\/(index)?$/, (req, res)=>{
     res.send('invitation', { csrfToken: req.csrfToken() });
 })
